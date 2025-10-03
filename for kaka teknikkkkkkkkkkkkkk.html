@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💖 Surprise For You 💖</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #ffeef8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      color: #d6336c;
+      font-size: 22px;
+      text-align: center;
+      white-space: pre-line;
+    }
+    button {
+      background: #d6336c;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #f72585;
+    }
+    .heart {
+      position: absolute;
+      top: -20px;
+      font-size: 24px;
+      color: pink;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0.7;
+      }
+    }
+    iframe { display: none; }
+    .cat {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <button id="startBtn">for u &lt;3</button>
+  <h1 id="message"></h1>
+
+  <!-- Foto kucing -->
+  <img src="cat.png" alt="Cute Cats" class="cat">
+
+  <!-- Musik YouTube (start di 2:15, end di 3:00) -->
+  <iframe id="ytPlayer"
+    src="https://www.youtube.com/embed/_m7R0BB86Mw?enablejsapi=1&controls=0&start=135&end=180"
+    allow="autoplay; encrypted-media">
+  </iframe>
+
+  <script>
+    const messages = [
+      "alooo sayangggg <3",
+      "morningg sayangg",
+      "have a nice dayy",
+      "semangat yaw buat hari ini",
+      "i always love u babe",
+      "jangan lupa sayang sama akuu yaaa!",
+      "papaiii"
+    ];
+    let msgIndex = 0, charIndex = 0;
+    const messageEl = document.getElementById("message");
+    const startBtn = document.getElementById("startBtn");
+    const ytPlayer = document.getElementById("ytPlayer");
+
+    function typeMessage() {
+      if (msgIndex < messages.length) {
+        let text = messages[msgIndex];
+        if (charIndex <= text.length) {
+          messageEl.textContent = text.slice(0, charIndex);
+          charIndex++;
+          setTimeout(typeMessage, 100);
+        } else {
+          msgIndex++; charIndex = 0;
+          setTimeout(typeMessage, 1200);
+        }
+      }
+    }
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    function playYouTube() {
+      ytPlayer.contentWindow.postMessage(
+        '{"event":"command","func":"playVideo","args":""}', '*'
+      );
+    }
+    startBtn.addEventListener("click", () => {
+      startBtn.style.display = "none";
+      typeMessage();
+      setInterval(createHeart, 300);
+      playYouTube();
+    });
+  </script>
+</body>
+</html>
